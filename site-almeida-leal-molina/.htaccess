@@ -1,0 +1,48 @@
+# ============================================================
+# ESTE ARQUIVO NÃO É USADO no deploy via Coolify/Nixpacks (Node).
+# O servidor em server/index.js já cuida de HTTPS (feito pelo proxy
+# do Coolify), cabeçalhos de segurança e da URL amigável /conteudos/<slug>.
+# Este .htaccess só serve se um dia o site for hospedado como arquivos
+# estáticos puros num servidor Apache, SEM o backend Node (nesse caso
+# o blog precisaria de outra API compatível com docs/API-CONTRATO.md).
+# ============================================================
+# ============================================================
+# Almeida, Leal & Molina — Apache (hospedagem compartilhada)
+# ============================================================
+Options -Indexes
+DirectoryIndex index.html
+
+# HTTPS obrigatório (proposta técnica)
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# URL amigável dos artigos: /conteudos/meu-artigo → artigo.html?slug=meu-artigo
+# (o blog.js já entende os dois formatos)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^conteudos/([a-z0-9-]+)/?$ conteudos/artigo.html?slug=$1 [L,QSA]
+
+# Painel fora dos buscadores
+<IfModule mod_headers.c>
+  <If "%{REQUEST_URI} =~ m#^/admin#">
+    Header set X-Robots-Tag "noindex, nofollow"
+  </If>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# Cache: imagens longas; CSS/JS versionados por ?v=N
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/json
+</IfModule>
