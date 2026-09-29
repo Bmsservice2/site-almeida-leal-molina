@@ -460,3 +460,23 @@ html.xp-has-cursor input, html.xp-has-cursor textarea { cursor: text; }
   .btn:hover, .btn--lg:hover, .filter:hover, .chip:hover, .share__btn:hover, .header-admin:hover, .menu-toggle:hover,
   .wa-float:hover, .xp-launch:hover, .xp-opt:hover, .linkedin:hover, .link-arrow:hover, .hero__areas a:hover { scale: none; }
 }
+
+/* Faixa da equipe: wrapper do wipe e <picture> ocupam a largura toda,
+   e o enquadramento prioriza os rostos (antes cortava as cabeças). */
+.band .media-reveal, .band picture { display: block; width: 100%; overflow: hidden; }
+.band__photo { display: block; object-position: center 12%; height: clamp(300px, 46vw, 640px); }
+@media (max-width: 699px) { .band__photo { height: clamp(240px, 70vw, 380px); object-position: 40% 10%; } }
+
+/* Banner antes do vídeo entrar: overlays bem mais leves e foto mais clara,
+   para todos os sócios aparecerem. Quando o vídeo começa, volta ao escuro. */
+.hero__overlay, .hero__media::after { transition: opacity 1.4s var(--ease); }
+.hero__poster { filter: brightness(1.12) contrast(1.02); }
+.hero:not(:has(.is-playing)) .hero__media::after { opacity: 0.15; }
+.hero:not(:has(.is-playing)) .hero__overlay {
+  background:
+    linear-gradient(90deg, rgba(8, 13, 19, 0.55) 0%, rgba(8, 13, 19, 0.22) 45%, rgba(8, 13, 19, 0.05) 100%),
+    linear-gradient(180deg, rgba(8, 13, 19, 0.4) 0%, transparent 28%, transparent 55%, rgba(8, 13, 19, 0.7) 100%);
+}
+@media (max-width: 699px) {
+  .hero:not(:has(.is-playing)) .hero__overlay { background: linear-gradient(180deg, rgba(8, 13, 19, 0.4) 0%, rgba(8, 13, 19, 0.1) 35%, rgba(8, 13, 19, 0.82) 82%); }
+}

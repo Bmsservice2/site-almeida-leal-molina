@@ -332,6 +332,12 @@
     document.dispatchEvent(new CustomEvent("alm:team-rendered"));
   }
   renderLatest();
-  if (document.readyState === "complete") { loadHeroVideo(); } else { window.addEventListener("load", loadHeroVideo); }
+  /* Timer: o vídeo só entra depois de ALM_CONFIG.heroVideo.atrasoMs (padrão 4s)
+     contados a partir do load; até lá o hero mostra só a foto. */
+  function scheduleHeroVideo() {
+    var d = (C.heroVideo && typeof C.heroVideo.atrasoMs === "number") ? C.heroVideo.atrasoMs : 4000;
+    setTimeout(loadHeroVideo, d);
+  }
+  if (document.readyState === "complete") { scheduleHeroVideo(); } else { window.addEventListener("load", scheduleHeroVideo); }
   fromHash();
 })();

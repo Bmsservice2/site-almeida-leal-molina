@@ -49,6 +49,7 @@ window.ALM_CONFIG = {
      começar e fica como fallback se ele não carregar. */
   heroVideo: {
     enabled: true,
+    atrasoMs: 4000,                    // timer: tempo (ms) mostrando só a foto antes do vídeo entrar
     provider: "local",                 // arquivo próprio em assets/video/ — sem YouTube, funciona offline
     id: "6my2ltOHaZE",
     src: "assets/video/banner.mp4",   // usado só com provider "local"
