@@ -1,0 +1,6 @@
+VÍDEO DO HERO
+banner.mp4  — H.264, sem áudio, "faststart" (começa a tocar antes de baixar tudo)
+banner.webm — VP9, sem áudio (mais leve; o navegador usa este quando suporta)
+Origem: vídeo enviado pela BMS (852x480, 36 s), reotimizado.
+Para trocar: substitua os dois arquivos mantendo os nomes. Ideal: 1920x1080, 15–40 s, em loop.
+Configuração em js/config.js → heroVideo (provider "local").
